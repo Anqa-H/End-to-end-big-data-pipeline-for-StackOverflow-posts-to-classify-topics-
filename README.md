@@ -155,7 +155,7 @@ SELECT
     TOP 5 *
 FROM
     OPENROWSET(
-        BULK 'https://capstoneprojectstore.dfs.core.windows.net/##/BI/ml_result.csv',
+        BULK 'https://.dfs.core.windows.net/##/BI/ml_result.csv',
         FORMAT = 'CSV',
         PARSER_VERSION = '2.0',
         HEADER_ROW = TRUE
