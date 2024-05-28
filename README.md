@@ -1,7 +1,8 @@
 # Big Data Engineering Project on Azure
 ## Project Overview
 
-In this Big Data Engineering project I leverages Azure, Apache Airflow, and Power BI to ingest data from two sources into an Azure Data Lake. Post-ingestion, data transformation and machine learning processes will be performed, with results stored back in the Data Lake. Finally, Azure Synapse and Power BI will be used to generate and visualize reports based on the processed data.
+In this Big Data Engineering project I leverages Azure, Apache Airflow, Apache Spark, DevOps, and Power BI to ingest data from two sources into an Azure Data Lake. Post-ingestion, data transformation and machine learning processes will be performed, with results stored back in the Data Lake. Finally, Azure Synapse and Power BI will be used to generate and visualize reports based on the processed data.Additionally, Azure Key Vault will securely store sensitive information for Databricks mount notebooks.
+
 ![Project](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/47e6a869-379b-4201-aecb-2fa1baa7aba1)
 ## Data Overview
 ### Data Background
@@ -21,7 +22,7 @@ Azure Storage Blob: Daily Posts data files in Parquet format.
 - Ingest Users and PostTypes tables from AWS RDS Postgres to the Data Lake weekly.
 - Ingest daily Posts data from Azure Blob container into the Data Lake.
 #### Machine Learning Process 
-- Create a Databricks notebook to process and clean data, run a machine learning model, and store results in the Data Lake.
+- Create a Databricks notebook to process and clean data, run a machine learning model using Apache Spark, and store results in the Data Lake.
 The model will classify post topics and output a file listing today's topics, ordered by frequency.
 ####  Chart and Visualization 
 - Create a chart in Azure Synapse based on the machine learning output to display the top 10 topics of the day.
@@ -32,6 +33,7 @@ The model will classify post topics and output a file listing today's topics, or
 - Azure Data Factory: Orchestrate data ingestion, transformation, and machine learning processes.
 - Azure Synapse: Analyze data and generate BI reports.
 - Apache Airflow: Manage and schedule data workflows.
+- Apache Spark: Perform data transformation and run machine learning models.
 - Power BI: Create interactive visualizations and dashboards.
 - Azure Key Vault: Securely store secrets, keys, and certificates.
 #### DevOps Integration
@@ -51,7 +53,7 @@ Move copied Posts data files to an Archive folder in the Data Lake and delete th
 ## Data Transformation
 
 - Perform data transformation in an ADF pipeline.
-- Use a Databricks notebook for data cleaning, transformation, and running the machine learning model.
+- Use a Databricks notebook with Apache Spark for data cleaning, transformation, and running the machine learning model.
 
 - Store the machine learning output in the Data Lake for further analysis.
 
