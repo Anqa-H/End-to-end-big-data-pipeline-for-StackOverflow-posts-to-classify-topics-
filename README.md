@@ -52,6 +52,8 @@ Move copied Posts data files to an Archive folder in the Data Lake and delete th
 ![Screenshot 2024-05-16 150018](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/d691499a-1c6c-41b9-ba3a-181f78688e96)
 ![Screenshot 2024-05-09 162509](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/b474d1a5-8485-4bea-882e-3a53b4a272b6)
 
+- Use Apache Airflow to manage and monitor this pipeline in ADF.
+![Screenshot 2024-05-20 233234](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/ff453cca-da6a-4f9e-abea-339943e576af)
 ## Data Transformation
 
 - Perform data transformation in an ADF pipeline.
