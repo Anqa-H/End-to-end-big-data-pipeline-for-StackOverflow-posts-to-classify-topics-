@@ -8,13 +8,14 @@ In this Big Data Engineering project I leverages Azure, Apache Airflow, Apache S
 ### Data Background
 The dataset originates from StackOverflow, capturing daily posts, post types, and user information. 
 The dataset's dates have been updated to reflect current dates, ensuring the posts data corresponds to today's date.
+![c60ad6c5-1b2a-4d86-9c12-ea9af55064bd](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/e1cefece-5434-4a3e-a82e-b4094180de07)
 
 #### Dataset Schema
 The dataset consists of three tables stored in two locations:
 
 RDS: The Users and PostTypes tables are stored in an AWS RDS Postgres database, updated weekly using SCD type 1 (overwrite old records).
 Azure Storage Blob: Daily Posts data files in Parquet format.
-
+![posts_files](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/55b8b42b-f1bf-48b3-9171-48fc21cba414)
 ## Business Requirements
 ##### Data Lake 
 - Create an Azure Data Lake with a hierarchical namespace.
@@ -23,7 +24,8 @@ Azure Storage Blob: Daily Posts data files in Parquet format.
 - Ingest daily Posts data from Azure Blob container into the Data Lake.
 #### Machine Learning Process 
 - Create a Databricks notebook to process and clean data, run a machine learning model using Apache Spark, and store results in the Data Lake.
-The model will classify post topics and output a file listing today's topics, ordered by frequency.
+- This machine learning model is to read the posts' text in the Posts files, classify what topic each post is about, and use Spark to output a file listing all the topics for today, ordered by their frequency.
+- Use Azure Key Vault to securely store credentials and other sensitive information for Databricks mount notebooks.
 ####  Chart and Visualization 
 - Create a chart in Azure Synapse based on the machine learning output to display the top 10 topics of the day.
 - Use Power BI to visualize the data and provide interactive reports and dashboards.
@@ -63,6 +65,6 @@ Move copied Posts data files to an Archive folder in the Data Lake and delete th
 
 - Use Azure Synapse to connect to the Data Lake.
 - Generate a chart displaying the top 10 topics of the day based on the machine learning model output.
-![Screenshot 2024-05-16 145651](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/f503df2d-7dc6-43bc-85fb-ec01be9f2bde)
+![SQL script 1](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/f5d61258-072d-408f-8ee9-4a785f7d6690)
 - Utilize Power BI to create interactive reports and dashboards for deeper insights and visualization of the data.
 ![5924876135106199796_121](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/98fa64a2-28d0-4dd8-8d82-904e58d95543)
