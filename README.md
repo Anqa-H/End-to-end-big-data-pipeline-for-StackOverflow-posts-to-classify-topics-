@@ -43,8 +43,8 @@ Implement DevOps practices to collaborate in Azure Data Factory (ADF).
 ## Data Ingestion
 
 - Connect to AWS RDS:
-Use ADF and Airflow to connect to the stack database and raw_st schema.
-Transfer Users and PostTypes tables to the Data Lake (weekly).
+Use ADF and Airflow to connect to 
+transfer Users and PostTypes tables to the Data Lake (weekly).
 ![Screenshot 2024-05-16 145216](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/fb9a3971-b573-4e26-8353-c3755a8bacfe)
 - Connect to Azure Blob Storage:
 Use ADF to copy daily Posts data files from the Azure Blob container to the Data Lake.
@@ -53,7 +53,90 @@ Move copied Posts data files to an Archive folder in the Data Lake and delete th
 ![Screenshot 2024-05-09 162509](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/b474d1a5-8485-4bea-882e-3a53b4a272b6)
 
 - Use Apache Airflow to manage and monitor this pipeline in ADF.
-![Screenshot 2024-05-20 233234](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/ff453cca-da6a-4f9e-abea-339943e576af)
+#### Default Arguments
+```bash
+  default_args = {
+    "retries": 1,
+    "retry_delay": timedelta(minutes=3),
+    "azure_data_factory_conn_id": "azure_data_factory",
+    "factory_name": "capstone-projectII-adf",
+    "resource_group_name": "capstone-projects",
+}
+```
+#### Python Function to Choose Task
+```bash
+ def choose_task(execution_date, **kwargs):
+    today = execution_date.weekday()
+    if today == 0:  # Monday
+        return 'run_copyOnceWeek'
+    else:
+        return 'run_copyPostsEveryday'
+}
+```
+#### Task Failure Alert Function
+```bash
+def task_failure_alert(context):
+    """
+    Send custom alert email on task failure.
+    """
+    dag_id = context['dag'].dag_id
+    task_id = context['task'].task_id
+    execution_date = context['execution_date']
+    task_instance = context['task_instance']
+
+    subject = f"Airflow alert: {dag_id} - {task_id} failed"
+    html_content = (
+        f"Task <b>{task_id}</b> failed on <b>{execution_date}</b>.<br>"
+        f"Log: <pre>{task_instance.log.read()}</pre>"
+    )
+
+    send_email(
+        to=['##@mail.com'],  
+        subject=subject,
+        html_content=html_content
+    )
+
+```
+#### Define the DAG
+```bash
+with DAG(
+    dag_id="capstone-projectII-adf",
+    start_date=datetime(2024, 5, 20),
+    schedule_interval=timedelta(days=1),  # Daily interval
+    catchup=False,
+    default_args=default_args,
+    default_view="graph",
+) as dag:
+```
+#### DAG Tasks
+```bash
+    begin = DummyOperator(task_id="begin")
+    end = DummyOperator(task_id="end")
+    
+    branching = BranchPythonOperator(
+        task_id='branching',
+        python_callable=choose_task,
+        provide_context=True,  # Provide execution context
+    )
+    
+    run_copyPostsEveryday = AzureDataFactoryRunPipelineOperator(
+        task_id="run_copyPostsEveryday", 
+        pipeline_name="copyPostsEveryday"
+    )
+    
+    run_copyOnceWeek = AzureDataFactoryRunPipelineOperator(
+        task_id="run_copyOnceWeek", 
+        pipeline_name="copyOnceWeek"
+    )
+
+    # Set up email alerts on task failure
+    dag.on_failure_callback = task_failure_alert
+
+    begin >> branching
+    branching >> run_copyOnceWeek >> end
+    branching >> run_copyPostsEveryday >> end
+```
+![Screenshot 2024-05-28 233450](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/a53433c4-2186-4fe5-a525-80c01bd55367)
 ## Data Transformation
 
 - Perform data transformation in an ADF pipeline.
@@ -67,6 +150,17 @@ Move copied Posts data files to an Archive folder in the Data Lake and delete th
 
 - Use Azure Synapse to connect to the Data Lake.
 - Generate a chart displaying the top 10 topics of the day based on the machine learning model output.
+```bash
+SELECT
+    TOP 5 *
+FROM
+    OPENROWSET(
+        BULK 'https://capstoneprojectstore.dfs.core.windows.net/##/BI/ml_result.csv',
+        FORMAT = 'CSV',
+        PARSER_VERSION = '2.0',
+        HEADER_ROW = TRUE
+    ) AS [result]
+```
 ![SQL script 1](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/f5d61258-072d-408f-8ee9-4a785f7d6690)
 - Utilize Power BI to create interactive reports and dashboards for deeper insights and visualization of the data.
 ![5924876135106199796_121](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/98fa64a2-28d0-4dd8-8d82-904e58d95543)
