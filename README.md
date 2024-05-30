@@ -1,7 +1,7 @@
 # Big Data Engineering Project on Azure
 ## Project Overview
 
-In this Big Data Engineering project I leverages Azure, Apache Airflow, Apache Spark, DevOps, and Power BI to ingest data from two sources into an Azure Data Lake. Post-ingestion, data transformation and machine learning processes will be performed, with results stored back in the Data Lake. Finally, Azure Synapse and Power BI will be used to generate and visualize reports based on the processed data.Additionally, Azure Key Vault will securely store sensitive information for Databricks mount notebooks.
+In this Big Data Engineering project I leverages Azure, Apache Airflow, Apache Spark, DevOps, and Power BI to ingest data from two sources into an Azure Data Lake. Post-ingestion, data transformation and machine learning processes will be performed, with results stored back in the Data Lake. Finally, Azure Synapse and Power BI  be used to generate and visualize reports based on the processed data.Additionally, Azure Key Vault used to  securely store sensitive information for Databricks mount notebooks.
 
 ![Project](https://github.com/Anqa-H/End-to-end-big-data-pipeline-for-StackOverflow-posts-to-classify-topics-/assets/80011409/47e6a869-379b-4201-aecb-2fa1baa7aba1)
 ## Data Overview
